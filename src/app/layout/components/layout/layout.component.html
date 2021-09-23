@@ -1,0 +1,34 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side" color="primary">
+    <mat-toolbar class="sidenav-title">Menu</mat-toolbar>
+    <mat-nav-list class="sidenav-options">
+      <a mat-list-item *ngFor="let option of navOptions" [href]="option.path">{{
+        option.title
+      }}</a>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <mat-toolbar color="primary">
+      <button
+        mat-icon-button
+        class="example-icon"
+        aria-label="Example icon-button with menu icon"
+        (click)="drawer.toggle()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>RMRO Web</span>
+      <span class="example-spacer"></span>
+    </mat-toolbar>
+    <!-- <router-outlet></router-outlet> -->
+    <div style="height: 100%">
+      <h1>Contenido</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea sed dolorum
+        amet laudantium aut, ratione obcaecati dolor rerum repellendus hic atque
+        mollitia est. Libero possimus officia id, hic optio excepturi.
+      </p>
+    </div>
+  </div>
+</mat-drawer-container>
