@@ -1,5 +1,5 @@
 <div class="login-view">
-  <form>
+  <form [formGroup]="form" (ngSubmit)="login($event)">
     <mat-card class="form-card" color="primary">
       <mat-card-header>
         <mat-card-title>Iniciar sesión</mat-card-title>
@@ -8,16 +8,23 @@
       <mat-card-content class="form-section">
         <mat-form-field appearance="fill">
           <mat-label>Correo</mat-label>
-          <input matInput />
+          <input matInput formControlName="email" type="email" />
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Contraseña</mat-label>
-          <input matInput />
+          <input matInput formControlName="password" type="password" />
         </mat-form-field>
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-raised-button color="primary">Acceder</button>
+        <button
+          mat-raised-button
+          [disabled]="form.invalid"
+          color="primary"
+          type="submit"
+        >
+          Acceder
+        </button>
       </mat-card-actions>
     </mat-card>
   </form>
