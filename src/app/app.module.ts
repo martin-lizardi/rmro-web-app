@@ -10,7 +10,7 @@ import { CoreModule } from './core/core.module';
 import { LayoutComponent } from './layout/layout.component';
 
 import { AngularFireModule } from '@angular/fire/compat';
-// import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 // import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 
