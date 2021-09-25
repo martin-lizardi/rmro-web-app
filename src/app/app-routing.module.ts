@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoggedGuard } from './guards/logged/logged.guard';
 import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    canActivateChild: [LoggedGuard],
     children: [
       {
         path: '',
@@ -21,6 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [LoggedGuard],
     loadChildren: () =>
       import('src/app/auth/auth.module').then((m) => m.AuthModule),
   },
