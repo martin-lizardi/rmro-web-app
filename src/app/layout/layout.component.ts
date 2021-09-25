@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavOption } from '../../models/nav-option.model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+interface NavOption {
+  path: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-layout',
