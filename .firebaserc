@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "rmro-5d8ff": {
+      "hosting": {
+        "rmro-web-app": [
+          "rmro-5d8ff"
+        ]
+      }
+    }
+  }
+}
