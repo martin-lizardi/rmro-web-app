@@ -1,34 +1,43 @@
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="sidenav" mode="side" color="primary">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <mat-toolbar class="sidenav-title">Menu</mat-toolbar>
     <mat-nav-list class="sidenav-options">
-      <a mat-list-item *ngFor="let option of navOptions" [href]="option.path">{{
-        option.title
-      }}</a>
-    </mat-nav-list>
-  </mat-drawer>
-
-  <div class="example-sidenav-content">
-    <mat-toolbar color="primary">
-      <button
-        mat-icon-button
-        class="example-icon"
-        aria-label="Example icon-button with menu icon"
-        (click)="drawer.toggle()"
+      <a
+        mat-list-item
+        *ngFor="let option of navOptions"
+        [routerLink]="[option.path]"
+        >{{ option.title }}</a
       >
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span>RMRO Web</span>
-      <span class="example-spacer"></span>
-    </mat-toolbar>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-toolbar color="primary">
+    <button
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async"
+    >
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <span>RMRO Web</span>
+  </mat-toolbar>
+
+  <div class="container">
     <!-- <router-outlet></router-outlet> -->
-    <div style="height: 100%">
-      <h1>Contenido</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea sed dolorum
-        amet laudantium aut, ratione obcaecati dolor rerum repellendus hic atque
-        mollitia est. Libero possimus officia id, hic optio excepturi.
-      </p>
-    </div>
+    <h1>Contenido</h1>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea sed dolorum
+      amet laudantium aut, ratione obcaecati dolor rerum repellendus hic atque
+      mollitia est. Libero possimus officia id, hic optio excepturi.
+    </p>
   </div>
-</mat-drawer-container>
+</mat-sidenav-container>
