@@ -19,6 +19,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('src/app/home/home.module').then((m) => m.HomeModule),
       },
+      {
+        path: 'robot',
+        loadChildren: () =>
+          import('src/app/robot/robot.module').then((m) => m.RobotModule),
+      },
     ],
   },
   {
