@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RobotService } from 'src/app/core/services/robot/robot.service';
 
 @Component({
   selector: 'app-create-robot',
@@ -9,7 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreateRobotComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private robotService: RobotService,
+    private router: Router
+  ) {
     this.buildForm();
   }
 
@@ -23,10 +29,24 @@ export class CreateRobotComponent implements OnInit {
     });
   }
 
-  saveRobot(event: Event) {
+  async saveRobot(event: Event) {
     event.preventDefault;
     if (this.form.valid) {
-      // Save data
+      const { alias, serial_number, model } = this.form.value;
+      const newRobot: any = {
+        alias,
+        serial_number,
+        model,
+      };
+
+      try {
+        const res = await this.robotService.createRobot(newRobot);
+        console.log(res);
+        this.router.navigate(['/home']);
+      } catch (error) {
+        console.log(error);
+        alert('¡Oops, algo salió mal!');
+      }
     }
     console.log(this.form.value);
   }
