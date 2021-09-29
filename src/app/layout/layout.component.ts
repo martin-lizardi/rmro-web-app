@@ -34,6 +34,10 @@ export class LayoutComponent implements OnInit {
         path: '',
         title: 'Inicio',
       },
+      {
+        path: 'robot/create',
+        title: 'Agregar robot',
+      },
     ];
   }
 

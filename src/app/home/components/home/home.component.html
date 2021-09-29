@@ -1,31 +1,45 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+<ng-container *ngIf="robots$ | async as robots; else notData">
+  <table
+    *ngIf="robots.length > 0"
+    mat-table
+    [dataSource]="robots"
+    class="mat-elevation-z8"
+  >
+    <!-- Alias Column -->
+    <ng-container matColumnDef="alias">
+      <th mat-header-cell *matHeaderCellDef>Alias</th>
+      <td mat-cell *matCellDef="let robot">{{ robot.alias }}</td>
+    </ng-container>
 
-  <!-- ID Column -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-  </ng-container>
+    <!-- Model Column -->
+    <ng-container matColumnDef="model">
+      <th mat-header-cell *matHeaderCellDef>Modelo</th>
+      <td mat-cell *matCellDef="let robot">{{ robot.model }}</td>
+    </ng-container>
 
-  <!-- Alias Column -->
-  <ng-container matColumnDef="alias">
-    <th mat-header-cell *matHeaderCellDef>Alias</th>
-    <td mat-cell *matCellDef="let element">{{ element.alias }}</td>
-  </ng-container>
+    <!-- Serial Number Column -->
+    <ng-container matColumnDef="serial_number">
+      <th mat-header-cell *matHeaderCellDef>Número de serie</th>
+      <td mat-cell *matCellDef="let robot">{{ robot.serial_number }}</td>
+    </ng-container>
 
-  <!-- Model Column -->
-  <ng-container matColumnDef="model">
-    <th mat-header-cell *matHeaderCellDef>Modelo</th>
-    <td mat-cell *matCellDef="let element">{{ element.model }}</td>
-  </ng-container>
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let robot">
+        <button mat-stroked-button [routerLink]="['/robot', robot.alias]">
+          Ver
+        </button>
+      </td>
+    </ng-container>
 
-  <!-- Serial Number Column -->
-  <ng-container matColumnDef="serial_number">
-    <th mat-header-cell *matHeaderCellDef>Número de serie</th>
-    <td mat-cell *matCellDef="let element">{{ element.serial_number }}</td>
-  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+  <p *ngIf="robots.length == 0">No hay datos</p>
+</ng-container>
+
+<ng-template #notData>
+  <p>No hay datos</p>
+</ng-template>

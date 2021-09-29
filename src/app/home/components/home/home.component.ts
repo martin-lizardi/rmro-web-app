@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Robot, RobotService } from 'src/app/core/services/robot/robot.service';
 
 export interface RobotRow {
-  id: string;
   alias: string;
   model: string;
   serial_number: string;
 }
-
-const ELEMENT_DATA: RobotRow[] = [
-  { id: '1', alias: 'Equipo 1', model: 'XCL-01', serial_number: '145' },
-  { id: '2', alias: 'Equipo 2', model: 'XCL-01', serial_number: '146' },
-  { id: '3', alias: 'Equipo 4', model: 'XCL-01', serial_number: '148' },
-];
 
 @Component({
   selector: 'app-home',
@@ -19,10 +14,13 @@ const ELEMENT_DATA: RobotRow[] = [
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'alias', 'model', 'serial_number'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[];
+  robots$: Observable<Robot[]>;
 
-  constructor() {}
+  constructor(private robotService: RobotService) {
+    this.displayedColumns = ['alias', 'model', 'serial_number', 'actions'];
+    this.robots$ = this.robotService.robots$;
+  }
 
   ngOnInit(): void {}
 }
