@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 
 import {
   AngularFirestore,
-  AngularFirestoreDocument,
+  AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Robot {
   alias: string;
@@ -16,30 +17,31 @@ export interface Robot {
   providedIn: 'root',
 })
 export class RobotService {
-  // private robotsDoc: AngularFirestoreDocument<Robot>;
-  // robots$: Observable<Robot | undefined>;
+  private path = 'robots';
+  private robotsCollection: AngularFirestoreCollection<Robot>;
+  robots$!: Observable<Robot[]>;
 
   constructor(private afs: AngularFirestore) {
-    // this.robotsDoc = afs.doc<Robot>('robots/test');
-    // this.robots$ = this.robotsDoc.valueChanges();
+    this.robotsCollection = afs.collection<Robot>(`${this.path}`);
+    this.getRobots();
   }
 
-  createRobotTest(robot: Robot) {
-    const { alias, serial_number, model } = robot;
-    const robotsDoc = this.afs.doc<any>(`robots/${alias}`);
-    return robotsDoc.set({ serial_number, model });
+  private getRobots() {
+    this.robots$ = this.afs
+      .collection(`${this.path}`)
+      .snapshotChanges()
+      .pipe(
+        map((actions) => actions.map((a) => a.payload.doc.data() as Robot))
+      );
   }
 
   createRobot(robot: Robot) {
-    const { alias, serial_number, model } = robot;
-    return this.afs
-      .collection('robots')
-      .doc(alias)
-      .set({ serial_number, model });
+    return this.robotsCollection.doc(robot.alias).set(robot);
   }
 
   test() {
     // return this.afs.collection('robots').add({ xd: { lol: true } });
-    return this.afs.collection('robots').doc('xd').set({ lol: true });
+    const algo = this.afs.collection('robots');
+    console.log(algo);
   }
 }
