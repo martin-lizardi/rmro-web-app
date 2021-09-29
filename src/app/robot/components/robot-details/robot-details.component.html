@@ -1,0 +1,40 @@
+<ng-container *ngIf="robot$ | async as robot; else notData">
+  <mat-card class="example-card">
+    <mat-card-title-group>
+      <mat-card-title>{{ robot.alias }}</mat-card-title>
+      <mat-card-subtitle>{{ robot.model }}</mat-card-subtitle>
+    </mat-card-title-group>
+
+    <mat-card-content>
+      <p>
+        Modelo: <b>{{ robot.model }}</b>
+      </p>
+      <p>
+        No. de serie: <b>{{ robot.serial_number }}</b>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-title-group>
+      <mat-card-title>Datos de trabajo</mat-card-title>
+    </mat-card-title-group>
+
+    <mat-card-content>
+      <p>Disponible: {{ robot.logged ? "No" : "Sí" }}</p>
+      <p>Historial de sesiones:</p>
+      <ul *ngIf="robot.logged_dates.length > 0; else notHistorical"></ul>
+      <ng-template #notHistorical>
+        <p style="margin-left: 10px"><em>No hay datos</em></p>
+      </ng-template>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button disabled>Ver registros de actividad</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>
+
+<ng-template #notData>
+  <p>No hay datos</p>
+</ng-template>

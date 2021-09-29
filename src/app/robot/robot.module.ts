@@ -5,9 +5,10 @@ import { MaterialModule } from '../material/material.module';
 
 import { RobotRoutingModule } from './robot-routing.module';
 import { CreateRobotComponent } from './components/create-robot/create-robot.component';
+import { RobotDetailsComponent } from './components/robot-details/robot-details.component';
 
 @NgModule({
-  declarations: [CreateRobotComponent],
+  declarations: [CreateRobotComponent, RobotDetailsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

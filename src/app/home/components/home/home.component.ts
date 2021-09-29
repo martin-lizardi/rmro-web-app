@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   robots$: Observable<Robot[]>;
 
   constructor(private robotService: RobotService) {
-    this.displayedColumns = ['alias', 'model', 'serial_number'];
+    this.displayedColumns = ['alias', 'model', 'serial_number', 'actions'];
     this.robots$ = this.robotService.robots$;
   }
 
