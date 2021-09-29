@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   private openDialog() {
     this.dialog.open(AlertComponent, {
       data: {
-        type: 'alert',
+        type: 'info',
         title: '¡Oops! Algo salió mal',
         content: 'Vuelva a intentar.',
       },

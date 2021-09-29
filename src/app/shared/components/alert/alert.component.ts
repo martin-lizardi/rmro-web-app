@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface AlertConfiguration {
-  type: 'alert' | 'warning' | 'danger';
+  type: 'info' | 'warning' | 'danger';
   title: string;
   content?: string;
 }
