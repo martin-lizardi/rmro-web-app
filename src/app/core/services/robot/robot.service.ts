@@ -44,6 +44,10 @@ export class RobotService {
     return this.robotsCollection.doc(robot.alias).set(robot);
   }
 
+  deleteRobot(alias: string) {
+    return this.robotsCollection.doc(alias).delete();
+  }
+
   test() {
     // return this.afs.collection('robots').add({ xd: { lol: true } });
     const algo = this.afs.collection('robots');

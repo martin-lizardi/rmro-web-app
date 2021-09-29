@@ -27,8 +27,19 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let robot">
-        <button mat-stroked-button [routerLink]="['/robot', robot.alias]">
+        <button
+          mat-stroked-button
+          [routerLink]="['/robot', robot.alias]"
+          style="margin-right: 5px"
+        >
           Ver
+        </button>
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="openDeleteAlert(robot.alias)"
+        >
+          Eliminar
         </button>
       </td>
     </ng-container>
