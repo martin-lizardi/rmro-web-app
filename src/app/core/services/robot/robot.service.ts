@@ -11,6 +11,11 @@ export interface Robot {
   alias: string;
   serial_number: string;
   model: string;
+  logged: boolean;
+  logged_dates: string[];
+  in_work: boolean;
+  created_date: string;
+  updated_date: string;
 }
 
 @Injectable({

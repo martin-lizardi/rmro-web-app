@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RobotService } from 'src/app/core/services/robot/robot.service';
+import { Robot, RobotService } from 'src/app/core/services/robot/robot.service';
 
 @Component({
   selector: 'app-create-robot',
@@ -33,20 +33,21 @@ export class CreateRobotComponent implements OnInit {
     event.preventDefault;
     if (this.form.valid) {
       const { alias, serial_number, model } = this.form.value;
-      const newRobot: any = {
+      const newRobot: Robot = {
         alias,
         serial_number,
         model,
+        logged: false,
+        logged_dates: [],
+        in_work: false,
+        created_date: new Date().toLocaleDateString(),
+        updated_date: '',
       };
 
-      try {
-        const res = await this.robotService.createRobot(newRobot);
-        console.log(res);
-        this.router.navigate(['/home']);
-      } catch (error) {
-        console.log(error);
-        alert('¡Oops, algo salió mal!');
-      }
+      this.robotService
+        .createRobot(newRobot)
+        .then(() => this.router.navigate(['/home']))
+        .catch(() => alert('¡Oops, algo salió mal!'));
     }
     console.log(this.form.value);
   }
