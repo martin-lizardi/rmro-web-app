@@ -8,14 +8,21 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoggedGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private router: Router
+  ) {}
+
+  private clearUser() {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -25,11 +32,16 @@ export class LoggedGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService
-      .hasUser()
-      .pipe(
-        map((user) => (user === null ? true : this.router.parseUrl('/home')))
-      );
+    const userData = this.storageService.user;
+    return this.authService.hasUser().pipe(
+      map((user) => {
+        if (user === null || userData === null) {
+          this.authService.logout();
+          return true;
+        }
+        return this.router.parseUrl('/home');
+      })
+    );
   }
 
   canActivateChild(
@@ -40,10 +52,15 @@ export class LoggedGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService
-      .hasUser()
-      .pipe(
-        map((user) => (user === null ? this.router.parseUrl('/login') : true))
-      );
+    const userData = this.storageService.user;
+    return this.authService.hasUser().pipe(
+      map((user) => {
+        if (user === null || userData === null) {
+          this.authService.logout();
+          return this.router.parseUrl('/login');
+        }
+        return true;
+      })
+    );
   }
 }

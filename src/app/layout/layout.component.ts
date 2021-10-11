@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth/auth.service';
+import {
+  StorageService,
+  UserData,
+} from '../core/services/storage/storage.service';
+import { UserService } from '../core/services/user/user.service';
 
 interface NavOption {
   path: string;
@@ -23,11 +28,14 @@ export class LayoutComponent implements OnInit {
       shareReplay()
     );
   navOptions: NavOption[];
+  userData$!: Observable<UserData>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService,
+    private storageService: StorageService
   ) {
     this.navOptions = [
       {
@@ -39,15 +47,27 @@ export class LayoutComponent implements OnInit {
         title: 'Agregar robot',
       },
     ];
+    this.subscribeToUser();
   }
 
   ngOnInit(): void {}
+
+  private subscribeToUser() {
+    const uid = this.storageService.user?.uid || '';
+    this.userData$ = this.userService.getUser(uid);
+  }
 
   selectionChange(ev: Event) {
     console.log(ev.target);
   }
 
-  logout() {
-    this.authService.logout().then(() => this.router.navigate(['/login']));
+  async logout() {
+    this.storageService.clearUser();
+    try {
+      await this.authService.logout();
+    } catch (error) {
+    } finally {
+      this.router.navigate(['/login']);
+    }
   }
 }
