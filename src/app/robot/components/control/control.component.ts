@@ -5,6 +5,9 @@ import { map } from 'rxjs/operators';
 import { ControlRobotService } from 'src/app/core/services/control-robot/control-robot.service';
 import { Robot, RobotService } from 'src/app/core/services/robot/robot.service';
 
+// var joy = new JoyStick('joyDiv');
+declare const JoyStick: any;
+// https://fmoralesdev.com/2019/10/23/using-external-js-files-in-angular/
 @Component({
   selector: 'app-control',
   templateUrl: './control.component.html',
@@ -25,6 +28,8 @@ export class ControlComponent implements OnInit {
       try {
         this.robot$ = this.robotService.findRobot(alias);
         this.controlRobotService.init(alias);
+        console.log('LOL', JoyStick);
+        // var joy = new JoyStick('joyDiv');
       } catch (error) {
         alert('Err');
       }

@@ -16,6 +16,13 @@
     </mat-grid-tile>
   </mat-grid-list>
 </ng-container>
+<mat-grid-list cols="3" rowHeight="100px">
+  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1">
+    <div id="joyDiv"></div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
+</mat-grid-list>
 <ng-template #notRobot>
   <h3>Oops, algo salió mal.</h3>
 </ng-template>
