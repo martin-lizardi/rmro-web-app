@@ -16,6 +16,7 @@ export interface Robot {
   in_work: boolean;
   created_date: string;
   updated_date: string;
+  actions?: string;
 }
 
 @Injectable({
@@ -38,6 +39,14 @@ export class RobotService {
       .pipe(
         map((actions) => actions.map((a) => a.payload.doc.data() as Robot))
       );
+  }
+
+  findRobot(alias: string) {
+    return this.afs
+      .collection(`${this.path}`)
+      .doc(alias)
+      .snapshotChanges()
+      .pipe(map((a) => a.payload.data() as Robot));
   }
 
   createRobot(robot: Robot) {
