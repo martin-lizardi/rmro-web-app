@@ -1,0 +1,21 @@
+<ng-container *ngIf="robot$ | async as robot; else notRobot">
+  <h2>{{ robot.alias }}</h2>
+
+  <mat-grid-list cols="3" rowHeight="100px">
+    <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="'lightblue'">
+      <button mat-raised-button (click)="move(robot, 'Up')">Up</button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
+      <button mat-raised-button (click)="move(robot, 'Left')">Left</button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
+      <button mat-raised-button (click)="move(robot, 'Down')">Down</button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
+      <button mat-raised-button (click)="move(robot, 'Rigth')">Rigth</button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</ng-container>
+<ng-template #notRobot>
+  <h3>Oops, algo salió mal.</h3>
+</ng-template>
