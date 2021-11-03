@@ -9,7 +9,7 @@ import { Robot } from '../robot/robot.service';
   providedIn: 'root',
 })
 export class ControlRobotService {
-  private path = 'robots';
+  private path = 'actions';
   private robotDoc: AngularFirestoreDocument<Robot> | null;
 
   constructor(private afs: AngularFirestore) {

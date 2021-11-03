@@ -84,10 +84,10 @@ export class ControlComponent implements OnInit, OnDestroy {
         //   x: element.GetX(),
         //   y: element.GetY(),
         // };
-        console.log('DIR', this.myJoystick.GetDir());
+        // console.log('DIR', this.myJoystick.GetDir());
 
-        if (this.myJoystick.GetDir() != 'C')
-          this.move(this.myJoystick.GetDir());
+        // if (this.myJoystick.GetDir() != 'C')
+        this.move(this.myJoystick.GetDir());
       }, 800);
       console.log(joy);
     }, 2000);
@@ -101,7 +101,7 @@ export class ControlComponent implements OnInit, OnDestroy {
         actions: direction,
       });
       // document?.getElementById('joystick')?.parentNode?.removeChild(document?.getElementById('joystick'));
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
 

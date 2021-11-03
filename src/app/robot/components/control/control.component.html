@@ -11,37 +11,6 @@
         style="width: 200px; height: 200px; margin-bottom: 20px"
       ></div>
     </div>
-
-    <mat-grid-list cols="3" rowHeight="100px">
-      <mat-grid-tile
-        [colspan]="3"
-        [rowspan]="1"
-        [style.background]="'lightblue'"
-      >
-        <button mat-raised-button (click)="move('Up')">Up</button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [colspan]="1"
-        [rowspan]="1"
-        [style.background]="'lightblue'"
-      >
-        <button mat-raised-button (click)="move('Left')">Left</button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [colspan]="1"
-        [rowspan]="1"
-        [style.background]="'lightblue'"
-      >
-        <button mat-raised-button (click)="move('Down')">Down</button>
-      </mat-grid-tile>
-      <mat-grid-tile
-        [colspan]="1"
-        [rowspan]="1"
-        [style.background]="'lightblue'"
-      >
-        <button mat-raised-button (click)="move('Rigth')">Rigth</button>
-      </mat-grid-tile>
-    </mat-grid-list>
   </ng-container>
 
   <ng-template #failed>
