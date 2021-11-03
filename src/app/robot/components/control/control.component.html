@@ -1,28 +1,50 @@
-<ng-container *ngIf="robot$ | async as robot; else notRobot">
-  <h2>{{ robot.alias }}</h2>
-
-  <mat-grid-list cols="3" rowHeight="100px">
-    <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="'lightblue'">
-      <button mat-raised-button (click)="move(robot, 'Up')">Up</button>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
-      <button mat-raised-button (click)="move(robot, 'Left')">Left</button>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
-      <button mat-raised-button (click)="move(robot, 'Down')">Down</button>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="'lightblue'">
-      <button mat-raised-button (click)="move(robot, 'Rigth')">Rigth</button>
-    </mat-grid-tile>
-  </mat-grid-list>
+<ng-container *ngIf="loading; else loaded">
+  <h2>Cargando...</h2>
 </ng-container>
-<mat-grid-list cols="3" rowHeight="100px">
-  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-  <mat-grid-tile [colspan]="1" [rowspan]="1">
-    <div id="joyDiv"></div>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="1" [rowspan]="1"></mat-grid-tile>
-</mat-grid-list>
-<ng-template #notRobot>
-  <h3>Oops, algo salió mal.</h3>
+<ng-template #loaded>
+  <ng-container *ngIf="success; else failed">
+    <!-- <h2>{{ robot.alias }}</h2> -->
+
+    <div class="joyArea">
+      <div
+        id="joyDiv"
+        style="width: 200px; height: 200px; margin-bottom: 20px"
+      ></div>
+    </div>
+
+    <mat-grid-list cols="3" rowHeight="100px">
+      <mat-grid-tile
+        [colspan]="3"
+        [rowspan]="1"
+        [style.background]="'lightblue'"
+      >
+        <button mat-raised-button (click)="move('Up')">Up</button>
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="1"
+        [style.background]="'lightblue'"
+      >
+        <button mat-raised-button (click)="move('Left')">Left</button>
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="1"
+        [style.background]="'lightblue'"
+      >
+        <button mat-raised-button (click)="move('Down')">Down</button>
+      </mat-grid-tile>
+      <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="1"
+        [style.background]="'lightblue'"
+      >
+        <button mat-raised-button (click)="move('Rigth')">Rigth</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </ng-container>
+
+  <ng-template #failed>
+    <h3>Oops, algo salió mal.</h3>
+  </ng-template>
 </ng-template>
