@@ -16,8 +16,11 @@ declare const document: Document;
 })
 export class ControlComponent implements OnInit, OnDestroy {
   robot!: Robot;
-  myJoystick: any;
-  joystickListener: any;
+  joystick: {
+    element: any;
+    listener: any;
+    status: any;
+  };
   loading: boolean;
   success: boolean;
 
@@ -28,6 +31,11 @@ export class ControlComponent implements OnInit, OnDestroy {
   ) {
     this.loading = true;
     this.success = false;
+    this.joystick = {
+      element: null,
+      listener: null,
+      status: null,
+    };
   }
 
   ngOnInit(): void {
@@ -56,56 +64,38 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    clearInterval(this.joystickListener);
-    console.log('DEATH');
+    clearInterval(this.joystick.listener);
   }
 
   private buidlJoystick() {
     setTimeout(() => {
-      var joy = new JoyStick('joyDiv');
-      this.myJoystick = joy;
-      // this.myJoystick = {
-      //   element: joy,
-      //   inputPosX: '',
-      //   inputPosY: '',
-      //   direzione: '',
-      //   x: '',
-      //   y: '',
-      // };
-      this.joystickListener = setInterval(() => {
-        // const { element } = this.myJoystick;
-        // this.myJoystick = {
-        //   ...this.myJoystick,
+      const joy = new JoyStick('joyDiv');
+      this.joystick.element = joy;
+      this.joystick.listener = setInterval(() => {
+        // this.joystick.element = {
+        //   ...this.joystick.element,
         //   inputPosX: element.GetPosX(),
         //   inputPosY: element.GetPosY(),
         //   direzione: element.GetDir(),
         //   x: element.GetX(),
         //   y: element.GetY(),
         // };
-        // console.log('DIR', this.myJoystick.GetDir());
 
-        // if (this.myJoystick.GetDir() != 'C')
-        this.move(this.myJoystick.GetDir());
+        const dir = joy.GetDir();
+        if (dir != this.joystick.status) {
+          this.move(dir);
+        }
       }, 800);
-      console.log(joy);
     }, 2000);
   }
 
   async move(direction: string) {
     try {
-      const res = await this.controlRobotService.moveRobot({
-        ...this.robot,
-        // in_work: true,
-        actions: direction,
-      });
-      // document?.getElementById('joystick')?.parentNode?.removeChild(document?.getElementById('joystick'));
-      // console.log(res);
+      const res = await this.controlRobotService.moveRobot(direction);
+      console.log(direction);
+      this.joystick.status = direction;
     } catch (error) {
       console.log(error);
-
-      // alert('ERR');
     }
   }
 }
