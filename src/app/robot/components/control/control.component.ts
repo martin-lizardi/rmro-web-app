@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { ControlRobotService } from 'src/app/core/services/control-robot/control-robot.service';
 import { Robot, RobotService } from 'src/app/core/services/robot/robot.service';
 
@@ -16,13 +16,16 @@ declare const document: Document;
 })
 export class ControlComponent implements OnInit, OnDestroy {
   robot!: Robot;
-  joystick: {
+  control$!: Observable<any>;
+  loading: boolean;
+  loadingControl: boolean;
+  success: boolean;
+  robotOnline: boolean;
+  private joystick: {
     element: any;
     listener: any;
     status: any;
   };
-  loading: boolean;
-  success: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +33,9 @@ export class ControlComponent implements OnInit, OnDestroy {
     private controlRobotService: ControlRobotService
   ) {
     this.loading = true;
+    this.loadingControl = true;
     this.success = false;
+    this.robotOnline = false;
     this.joystick = {
       element: null,
       listener: null,
@@ -51,11 +56,9 @@ export class ControlComponent implements OnInit, OnDestroy {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(
         (robot) => {
-          console.log('RES', robot);
           this.robot = robot;
-          this.controlRobotService.init(alias);
+          this.initControl(alias);
           this.success = true;
-          this.buidlJoystick();
         },
         (err) => {
           this.success = false;
@@ -67,7 +70,14 @@ export class ControlComponent implements OnInit, OnDestroy {
     clearInterval(this.joystick.listener);
   }
 
+  private startControl() {
+    this.controlRobotService.start();
+  }
+
   private buidlJoystick() {
+    if (this.joystick.element != null) {
+      return;
+    }
     setTimeout(() => {
       const joy = new JoyStick('joyDiv');
       this.joystick.element = joy;
@@ -85,17 +95,40 @@ export class ControlComponent implements OnInit, OnDestroy {
         if (dir != this.joystick.status) {
           this.move(dir);
         }
-      }, 800);
+      }, 500);
     }, 2000);
+  }
+
+  private clearJoystick() {
+    this.joystick = {
+      element: null,
+      listener: null,
+      status: null,
+    };
   }
 
   async move(direction: string) {
     try {
       const res = await this.controlRobotService.moveRobot(direction);
-      console.log(direction);
       this.joystick.status = direction;
     } catch (error) {
       console.log(error);
     }
+  }
+
+  private initControl(alias: string) {
+    this.controlRobotService.init(alias);
+    this.control$ = this.controlRobotService.listener().pipe(
+      map((res) => {
+        this.robotOnline = res.control && res.robot;
+        if (this.robotOnline) {
+          this.buidlJoystick();
+        } else {
+          this.clearJoystick();
+        }
+        return res;
+      })
+    );
+    this.startControl();
   }
 }

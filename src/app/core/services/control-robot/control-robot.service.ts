@@ -1,36 +1,47 @@
 import { Injectable } from '@angular/core';
-import {
+/*import {
   AngularFirestore,
   AngularFirestoreDocument,
-} from '@angular/fire/compat/firestore';
+} from '@angular/fire/compat/firestore';*/
 import {
   AngularFireDatabase,
   AngularFireObject,
 } from '@angular/fire/compat/database';
-import { Robot } from '../robot/robot.service';
+// import { Robot } from '../robot/robot.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ControlRobotService {
   private path = 'actions';
-  private robotDoc: AngularFirestoreDocument<Robot> | null;
-  private realtimeDB: AngularFireObject<any>;
+  // private robotDoc: AngularFirestoreDocument<Robot> | null;
+  private realtimeDB!: AngularFireObject<any>;
 
-  constructor(private afs: AngularFirestore, private db: AngularFireDatabase) {
-    this.robotDoc = null;
-    this.realtimeDB = db.object(this.path);
+  constructor(
+    /*private afs: AngularFirestore, */ private db: AngularFireDatabase
+  ) {
+    // this.robotDoc = null;
   }
 
   init(alias: string) {
-    this.robotDoc = this.afs.collection<Robot>(`${this.path}`).doc(alias);
+    // this.robotDoc = this.afs.collection<Robot>(`${this.path}`).doc(alias);
+    this.realtimeDB = this.db.object(`${this.path}/${alias}`);
+    return this.realtimeDB.set({ action: '', control: false, robot: false });
   }
 
   // moveRobot(robot: Robot) {
   //   return this.robotDoc?.set(robot) || null;
   // }
 
+  listener() {
+    return this.realtimeDB.valueChanges();
+  }
+
+  start() {
+    return this.realtimeDB.update({ control: true });
+  }
+
   moveRobot(action: string) {
-    return this.realtimeDB.set(action);
+    return this.realtimeDB == null ? null : this.realtimeDB.update({ action });
   }
 }

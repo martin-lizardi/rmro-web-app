@@ -3,13 +3,18 @@
 </ng-container>
 <ng-template #loaded>
   <ng-container *ngIf="success; else failed">
-    <!-- <h2>{{ robot.alias }}</h2> -->
+    <h2>{{ robot.alias }}</h2>
 
-    <div class="joyArea">
-      <div
-        id="joyDiv"
-        style="width: 200px; height: 200px; margin-bottom: 20px"
-      ></div>
+    <div *ngIf="control$ | async" class="joyArea">
+      <ng-container *ngIf="robotOnline; else notRobot">
+        <div
+          id="joyDiv"
+          style="width: 200px; height: 200px; margin-bottom: 20px"
+        ></div>
+      </ng-container>
+      <ng-template #notRobot>
+        <p>Equipo fuera de línea</p>
+      </ng-template>
     </div>
   </ng-container>
 
