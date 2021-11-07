@@ -68,6 +68,7 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.joystick.listener);
+    this.controlRobotService.clear();
   }
 
   private startControl() {
@@ -96,7 +97,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           this.move(dir);
         }
       }, 500);
-    }, 2000);
+    }, 1000);
   }
 
   private clearJoystick() {
