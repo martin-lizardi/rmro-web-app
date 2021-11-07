@@ -3,19 +3,28 @@
 </ng-container>
 <ng-template #loaded>
   <ng-container *ngIf="success; else failed">
-    <h2>{{ robot.alias }}</h2>
+    <div class="control-content">
+      <mat-card>
+        <mat-card-title-group>
+          <mat-card-title>{{ robot.alias }}</mat-card-title>
+          <mat-card-subtitle>{{ robot.model }}</mat-card-subtitle>
+        </mat-card-title-group>
 
-    <div *ngIf="control$ | async" class="joyArea">
-      <ng-container *ngIf="robotOnline; else notRobot">
-        <div
-          id="joyDiv"
-          style="width: 200px; height: 200px; margin-bottom: 20px"
-        ></div>
-      </ng-container>
-      <ng-template #notRobot>
-        <p>Equipo fuera de línea</p>
-      </ng-template>
+        <mat-card-content> </mat-card-content>
+      </mat-card>
+
+      <div *ngIf="control$ | async" class="joyArea">
+        <ng-container *ngIf="robotOnline; else notRobot">
+          <div id="joyDiv" class="joystick"></div>
+        </ng-container>
+        <ng-template #notRobot>
+          <div class="notFound">
+            <h2>Equipo fuera de línea</h2>
+          </div>
+        </ng-template>
+      </div>
     </div>
+    <!-- <h2>{{ robot.alias }}</h2> -->
   </ng-container>
 
   <ng-template #failed>
