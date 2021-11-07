@@ -24,7 +24,9 @@ export class ControlComponent implements OnInit, OnDestroy {
   private joystick: {
     element: any;
     listener: any;
-    status: any;
+    direction: any;
+    vX: number;
+    vY: number;
   };
 
   constructor(
@@ -39,7 +41,9 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.joystick = {
       element: null,
       listener: null,
-      status: null,
+      direction: null,
+      vX: 0,
+      vY: 0,
     };
   }
 
@@ -75,6 +79,14 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.controlRobotService.start();
   }
 
+  private getVelocity(val: number) {
+    if (val < 0) {
+      val = -val;
+    }
+    const result = (val * 255) / 100;
+    return result > 255 ? 255 : result < 0 ? 0 : result;
+  }
+
   private buidlJoystick() {
     if (this.joystick.element != null) {
       return;
@@ -83,18 +95,12 @@ export class ControlComponent implements OnInit, OnDestroy {
       const joy = new JoyStick('joyDiv');
       this.joystick.element = joy;
       this.joystick.listener = setInterval(() => {
-        // this.joystick.element = {
-        //   ...this.joystick.element,
-        //   inputPosX: element.GetPosX(),
-        //   inputPosY: element.GetPosY(),
-        //   direzione: element.GetDir(),
-        //   x: element.GetX(),
-        //   y: element.GetY(),
-        // };
-
         const dir = joy.GetDir();
-        if (dir != this.joystick.status) {
-          this.move(dir);
+        const vX = this.getVelocity(joy.GetX());
+        const vY = this.getVelocity(joy.GetY());
+
+        if (dir != this.joystick.direction || vX != this.joystick.vX) {
+          this.move(dir, vX, vY);
         }
       }, 500);
     }, 1000);
@@ -104,14 +110,25 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.joystick = {
       element: null,
       listener: null,
-      status: null,
+      direction: null,
+      vX: 0,
+      vY: 0,
     };
   }
 
-  async move(direction: string) {
+  async move(direction: string, vX: number, vY: number) {
     try {
-      const res = await this.controlRobotService.moveRobot(direction);
-      this.joystick.status = direction;
+      const res = await this.controlRobotService.moveRobot({
+        direction,
+        vX,
+        vY,
+      });
+      this.joystick = {
+        ...this.joystick,
+        direction,
+        vX,
+        vY,
+      };
     } catch (error) {
       console.log(error);
     }

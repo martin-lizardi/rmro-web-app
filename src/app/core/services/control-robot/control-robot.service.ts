@@ -45,9 +45,7 @@ export class ControlRobotService {
     return this.realtimeDB.update({ control: true });
   }
 
-  moveRobot(direction: string) {
-    return this.realtimeDB == null
-      ? null
-      : this.realtimeDB.update({ direction });
+  moveRobot(data: { direction: string; vX: number; vY: number }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 }
