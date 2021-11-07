@@ -33,6 +33,10 @@
       <button mat-raised-button disabled>Ver registros de actividad</button>
     </mat-card-actions>
   </mat-card>
+
+  <button mat-raised-button [routerLink]="['/robot/control/', robot.alias]">
+    Control
+  </button>
 </ng-container>
 
 <ng-template #notData>

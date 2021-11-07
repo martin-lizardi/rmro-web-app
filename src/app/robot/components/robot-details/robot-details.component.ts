@@ -32,19 +32,7 @@ export class RobotDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       const { id: alias } = params;
-      this.loadData(alias);
+      this.robot$ = this.robotService.findRobot(alias);
     });
-  }
-
-  private loadData(alias: string) {
-    this.robot$ = this.robotService.robots$.pipe(
-      map((robots) => {
-        let robotData: Robot | null = null;
-        robots.forEach((robot) => {
-          if (robot.alias === alias) robotData = robot;
-        });
-        return robotData;
-      })
-    );
   }
 }
