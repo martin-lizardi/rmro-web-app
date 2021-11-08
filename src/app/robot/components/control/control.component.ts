@@ -80,7 +80,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   private getVelocity(val: number) {
-    const result = (val * 255) / 100;
+    const result = Math.trunc((val * 255) / 100);
     return result > 255 ? 255 : result < -255 ? -255 : result;
   }
 
