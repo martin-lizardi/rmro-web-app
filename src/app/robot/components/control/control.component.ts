@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
-import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ControlRobotService } from 'src/app/core/services/control-robot/control-robot.service';
 import { Robot, RobotService } from 'src/app/core/services/robot/robot.service';
 
@@ -80,11 +80,8 @@ export class ControlComponent implements OnInit, OnDestroy {
   }
 
   private getVelocity(val: number) {
-    if (val < 0) {
-      val = -val;
-    }
     const result = (val * 255) / 100;
-    return result > 255 ? 255 : result < 0 ? 0 : result;
+    return result > 255 ? 255 : result < -255 ? -255 : result;
   }
 
   private buidlJoystick() {
