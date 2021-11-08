@@ -52,4 +52,8 @@ export class ControlRobotService {
   changeArm(data: { arm: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
+
+  changeMagnet(data: { magnet: boolean }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
 }

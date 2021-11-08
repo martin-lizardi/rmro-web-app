@@ -31,6 +31,25 @@
           >
             Contraer brazo
           </button>
+
+          <button
+          *ngIf="!isMagnet"
+            mat-raised-button
+            [disabled]="isMagnet"
+            color="primary"
+            (click)="changeMagnet()"
+          >
+            Activar imán
+          </button>
+          <button
+          *ngIf="isMagnet"
+            mat-raised-button
+            [disabled]="!isMagnet"
+            color="primary"
+            (click)="changeMagnet()"
+          >
+            Desactivar imán
+          </button>
         </mat-card-actions>
       </mat-card>
 

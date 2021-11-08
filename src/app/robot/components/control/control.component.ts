@@ -22,6 +22,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   success: boolean;
   robotOnline: boolean;
   isArm: boolean;
+  isMagnet: boolean;
   private joystick: {
     element: any;
     listener: any;
@@ -40,6 +41,7 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.success = false;
     this.robotOnline = false;
     this.isArm = false;
+    this.isMagnet = false;
     this.joystick = {
       element: null,
       listener: null,
@@ -140,6 +142,17 @@ export class ControlComponent implements OnInit, OnDestroy {
         arm: !this.isArm
       });
       this.isArm = !this.isArm;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async changeMagnet() {
+    try {
+      const res = await this.controlRobotService.changeMagnet({
+        magnet: !this.isMagnet
+      });
+      this.isMagnet = !this.isMagnet;
     } catch (error) {
       console.log(error);
     }
