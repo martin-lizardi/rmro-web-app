@@ -11,6 +11,27 @@
         </mat-card-title-group>
 
         <mat-card-content> </mat-card-content>
+
+        <mat-card-actions *ngIf="isOnline()">
+          <button
+            *ngIf="!isArm"
+            mat-raised-button
+            [disabled]="isArm"
+            color="primary"
+            (click)="changeArm()"
+          >
+            Eyectar brazo
+          </button>
+          <button
+          *ngIf="isArm"
+            mat-raised-button
+            [disabled]="!isArm"
+            color="primary"
+            (click)="changeArm()"
+          >
+            Contraer brazo
+          </button>
+        </mat-card-actions>
       </mat-card>
 
       <div *ngIf="control$ | async" class="joyArea">

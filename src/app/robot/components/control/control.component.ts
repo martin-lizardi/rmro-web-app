@@ -21,6 +21,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   loadingControl: boolean;
   success: boolean;
   robotOnline: boolean;
+  isArm: boolean;
   private joystick: {
     element: any;
     listener: any;
@@ -38,6 +39,7 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.loadingControl = true;
     this.success = false;
     this.robotOnline = false;
+    this.isArm = false;
     this.joystick = {
       element: null,
       listener: null,
@@ -96,7 +98,8 @@ export class ControlComponent implements OnInit, OnDestroy {
         const vX = this.getVelocity(joy.GetX());
         const vY = this.getVelocity(joy.GetY());
 
-        if (dir != this.joystick.direction || vX != this.joystick.vX) {
+        if ((dir != this.joystick.direction || vX != this.joystick.vX) &&
+          !this.isArm) {
           this.move(dir, vX, vY);
         }
       }, 500);
@@ -129,6 +132,21 @@ export class ControlComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async changeArm() {
+    try {
+      const res = await this.controlRobotService.changeArm({
+        arm: !this.isArm
+      });
+      this.isArm = !this.isArm;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  isOnline() {
+    return this.joystick.element != null;
   }
 
   private initControl(alias: string) {

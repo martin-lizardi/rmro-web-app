@@ -26,7 +26,7 @@ export class ControlRobotService {
   init(alias: string) {
     // this.robotDoc = this.afs.collection<Robot>(`${this.path}`).doc(alias);
     this.realtimeDB = this.db.object(`${this.path}/${alias}`);
-    return this.realtimeDB.set({ direction: '', control: false, robot: false });
+    return this.realtimeDB.set({ direction: '', control: false, robot: false, arm: false });
   }
 
   clear() {
@@ -46,6 +46,10 @@ export class ControlRobotService {
   }
 
   moveRobot(data: { direction: string; vX: number; vY: number }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  changeArm(data: { arm: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 }
