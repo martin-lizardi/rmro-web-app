@@ -49,7 +49,11 @@ export class ControlRobotService {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 
-  changeArm(data: { arm: boolean }) {
+  changeArm(data: { arm: boolean, activatedArm?: boolean, magnet?: boolean }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  activateArm(data: { activatedArm: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 

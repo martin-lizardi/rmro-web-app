@@ -20,36 +20,58 @@
             color="primary"
             (click)="changeArm()"
           >
-            Eyectar brazo
-          </button>
-          <button
-          *ngIf="isArm"
-            mat-raised-button
-            [disabled]="!isArm"
-            color="primary"
-            (click)="changeArm()"
-          >
-            Contraer brazo
+            Habilitar brazo
           </button>
 
-          <button
-          *ngIf="!isMagnet"
-            mat-raised-button
-            [disabled]="isMagnet"
-            color="primary"
-            (click)="changeMagnet()"
-          >
-            Activar imán
-          </button>
-          <button
-          *ngIf="isMagnet"
-            mat-raised-button
-            [disabled]="!isMagnet"
-            color="primary"
-            (click)="changeMagnet()"
-          >
-            Desactivar imán
-          </button>
+          <ng-container *ngIf="isArm">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="changeArm()"
+            >
+              Deshabilitar brazo
+            </button>
+
+            <button
+              *ngIf="!activatedArm"
+              mat-raised-button
+              [disabled]="activatedArm"
+              color="primary"
+              (click)="activateArm()"
+            >
+              Extender brazo
+            </button>
+            <button
+              *ngIf="activatedArm"
+              mat-raised-button
+              [disabled]="!activatedArm"
+              color="primary"
+              (click)="activateArm()"
+            >
+              Contraer brazo
+            </button>
+  
+            <button
+            *ngIf="!isMagnet"
+              mat-raised-button
+              [disabled]="isMagnet"
+              color="primary"
+              (click)="changeMagnet()"
+            >
+              Activar imán
+            </button>
+            <button
+            *ngIf="isMagnet"
+              mat-raised-button
+              [disabled]="!isMagnet"
+              color="primary"
+              (click)="changeMagnet()"
+            >
+              Desactivar imán
+            </button>
+          </ng-container>
+          
+
         </mat-card-actions>
       </mat-card>
 

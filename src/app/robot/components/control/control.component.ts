@@ -22,6 +22,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   success: boolean;
   robotOnline: boolean;
   isArm: boolean;
+  activatedArm: boolean;
   isMagnet: boolean;
   private joystick: {
     element: any;
@@ -41,6 +42,7 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.success = false;
     this.robotOnline = false;
     this.isArm = false;
+    this.activatedArm = false;
     this.isMagnet = false;
     this.joystick = {
       element: null,
@@ -138,10 +140,29 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   async changeArm() {
     try {
-      const res = await this.controlRobotService.changeArm({
-        arm: !this.isArm
-      });
+      const data = this.isArm ?
+        {
+          arm: !this.isArm,
+          activatedArm: false,
+          magnet: false,
+        } : {arm: !this.isArm,};
+      const res = await this.controlRobotService.changeArm(data);
+      if (this.isArm) {
+        this.activatedArm = false;
+        this.isMagnet = false;
+      }
       this.isArm = !this.isArm;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async activateArm() {
+    try {
+      const res = await this.controlRobotService.activateArm({
+        activatedArm: !this.activatedArm
+      });
+      this.activatedArm = !this.activatedArm;
     } catch (error) {
       console.log(error);
     }
