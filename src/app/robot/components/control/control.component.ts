@@ -140,13 +140,11 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   async changeArm() {
     try {
-      const data = this.isArm ?
-        {
-          arm: !this.isArm,
-          activatedArm: false,
-          magnet: false,
-        } : {arm: !this.isArm,};
-      const res = await this.controlRobotService.changeArm(data);
+      const res = await this.controlRobotService.changeArm({
+        arm: !this.isArm,
+        activatedArm: false,
+        magnet: false,
+      });
       if (this.isArm) {
         this.activatedArm = false;
         this.isMagnet = false;
