@@ -145,11 +145,9 @@ export class ControlComponent implements OnInit, OnDestroy {
         activatedArm: false,
         magnet: false,
       });
-      if (this.isArm) {
-        this.activatedArm = false;
-        this.isMagnet = false;
-      }
       this.isArm = !this.isArm;
+      this.activatedArm = false;
+      this.isMagnet = false;
     } catch (error) {
       console.log(error);
     }
