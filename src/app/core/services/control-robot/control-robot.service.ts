@@ -7,6 +7,7 @@ import {
   AngularFireDatabase,
   AngularFireObject,
 } from '@angular/fire/compat/database';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 // import { Robot } from '../robot/robot.service';
 
 @Injectable({
@@ -18,7 +19,9 @@ export class ControlRobotService {
   private realtimeDB!: AngularFireObject<any>;
 
   constructor(
-    /*private afs: AngularFirestore, */ private db: AngularFireDatabase
+    /*private afs: AngularFirestore, */
+    private db: AngularFireDatabase,
+    private storage: AngularFireStorage
   ) {
     // this.robotDoc = null;
   }
@@ -54,10 +57,6 @@ export class ControlRobotService {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 
-  takePicture(data: { camera: { take_picture: boolean; uploaded: boolean } }) {
-    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
-  }
-
   changeArm(data: { arm: boolean; activatedArm?: boolean; magnet?: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
@@ -68,5 +67,18 @@ export class ControlRobotService {
 
   changeMagnet(data: { magnet: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  takePicture(data: { camera: { take_picture: true; uploaded: false } }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  loadedPicture(data: { camera: { uploaded: false } }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  fetchPicture(path: string) {
+    const storageRef = this.storage.ref(path);
+    return storageRef.getDownloadURL();
   }
 }

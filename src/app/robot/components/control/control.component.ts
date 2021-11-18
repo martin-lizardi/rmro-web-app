@@ -24,6 +24,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   isArm: boolean;
   activatedArm: boolean;
   isMagnet: boolean;
+  picture: string;
   private joystick: {
     element: any;
     listener: any;
@@ -44,6 +45,7 @@ export class ControlComponent implements OnInit, OnDestroy {
     this.isArm = false;
     this.activatedArm = false;
     this.isMagnet = false;
+    this.picture = '';
     this.joystick = {
       element: null,
       listener: null,
@@ -122,6 +124,42 @@ export class ControlComponent implements OnInit, OnDestroy {
     };
   }
 
+  private loadPicture(res: any) {
+    if (res?.camera?.uploaded === true) {
+      const path = res?.camera?.url || '';
+      this.controlRobotService.fetchPicture(path).subscribe((downloadURL) => {
+        this.picture = downloadURL;
+        console.log('YEAH', downloadURL);
+      });
+      this.controlRobotService.loadedPicture({
+        camera: { uploaded: false },
+      });
+    }
+  }
+
+  private clearPicture() {
+    this.picture = '';
+  }
+
+  private initControl(alias: string) {
+    this.controlRobotService.init(alias);
+    this.control$ = this.controlRobotService.listener().pipe(
+      map((res) => {
+        this.robotOnline = res.control && res.robot;
+        if (this.robotOnline) {
+          this.buidlJoystick();
+          this.loadPicture(res);
+        } else {
+          this.clearPicture();
+          this.clearJoystick();
+        }
+
+        return res;
+      })
+    );
+    this.startControl();
+  }
+
   async move(direction: string, vX: number, vY: number) {
     try {
       const res = await this.controlRobotService.moveRobot({
@@ -163,6 +201,7 @@ export class ControlComponent implements OnInit, OnDestroy {
           uploaded: false,
         },
       });
+      setTimeout(this.loadPicture, 5000);
     } catch (error) {
       console.log(error);
     }
@@ -192,21 +231,5 @@ export class ControlComponent implements OnInit, OnDestroy {
 
   isOnline() {
     return this.joystick.element != null;
-  }
-
-  private initControl(alias: string) {
-    this.controlRobotService.init(alias);
-    this.control$ = this.controlRobotService.listener().pipe(
-      map((res) => {
-        this.robotOnline = res.control && res.robot;
-        if (this.robotOnline) {
-          this.buidlJoystick();
-        } else {
-          this.clearJoystick();
-        }
-        return res;
-      })
-    );
-    this.startControl();
   }
 }
