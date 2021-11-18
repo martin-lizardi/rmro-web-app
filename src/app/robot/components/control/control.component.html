@@ -10,7 +10,13 @@
           <mat-card-subtitle>{{ robot.model }}</mat-card-subtitle>
         </mat-card-title-group>
 
-        <mat-card-content> </mat-card-content>
+        <mat-card-content>
+          <div *ngIf="picture.length > 0" class="pictureArea">
+            <div class="pictureFrame">
+              <img [src]="picture" />
+            </div>
+          </div>
+        </mat-card-content>
 
         <mat-card-actions *ngIf="isOnline()">
           <button mat-raised-button color="primary" (click)="takePicture()">
@@ -72,10 +78,6 @@
           </ng-container>
         </mat-card-actions>
       </mat-card>
-
-      <div *ngIf="picture.length > 0">
-        <img [src]="picture" />
-      </div>
 
       <div *ngIf="control$ | async" class="joyArea">
         <ng-container *ngIf="robotOnline; else notRobot">
