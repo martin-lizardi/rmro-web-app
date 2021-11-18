@@ -18,17 +18,23 @@
             mat-raised-button
             [disabled]="isArm"
             color="primary"
+            (click)="takePicture()"
+          >
+            Tomar foto
+          </button>
+
+          <button
+            *ngIf="!isArm"
+            mat-raised-button
+            [disabled]="isArm"
+            color="primary"
             (click)="changeArm()"
           >
             Habilitar brazo
           </button>
 
           <ng-container *ngIf="isArm">
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="changeArm()"
-            >
+            <button mat-raised-button color="primary" (click)="changeArm()">
               Deshabilitar brazo
             </button>
 
@@ -50,9 +56,9 @@
             >
               Contraer brazo
             </button>
-  
+
             <button
-            *ngIf="!isMagnet"
+              *ngIf="!isMagnet"
               mat-raised-button
               [disabled]="isMagnet"
               color="primary"
@@ -61,7 +67,7 @@
               Activar imán
             </button>
             <button
-            *ngIf="isMagnet"
+              *ngIf="isMagnet"
               mat-raised-button
               [disabled]="!isMagnet"
               color="primary"
@@ -70,8 +76,6 @@
               Desactivar imán
             </button>
           </ng-container>
-          
-
         </mat-card-actions>
       </mat-card>
 

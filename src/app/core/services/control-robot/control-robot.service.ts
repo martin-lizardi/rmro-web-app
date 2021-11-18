@@ -26,7 +26,12 @@ export class ControlRobotService {
   init(alias: string) {
     // this.robotDoc = this.afs.collection<Robot>(`${this.path}`).doc(alias);
     this.realtimeDB = this.db.object(`${this.path}/${alias}`);
-    return this.realtimeDB.set({ direction: '', control: false, robot: false, arm: false });
+    return this.realtimeDB.set({
+      direction: '',
+      control: false,
+      robot: false,
+      arm: false,
+    });
   }
 
   clear() {
@@ -49,7 +54,11 @@ export class ControlRobotService {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 
-  changeArm(data: { arm: boolean, activatedArm?: boolean, magnet?: boolean }) {
+  takePicture(data: { camera: { take_picture: boolean; uploaded: boolean } }) {
+    return this.realtimeDB == null ? null : this.realtimeDB.update(data);
+  }
+
+  changeArm(data: { arm: boolean; activatedArm?: boolean; magnet?: boolean }) {
     return this.realtimeDB == null ? null : this.realtimeDB.update(data);
   }
 

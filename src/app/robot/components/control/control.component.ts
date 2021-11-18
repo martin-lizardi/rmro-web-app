@@ -102,8 +102,10 @@ export class ControlComponent implements OnInit, OnDestroy {
         const vX = this.getVelocity(joy.GetX());
         const vY = this.getVelocity(joy.GetY());
 
-        if ((dir != this.joystick.direction || vX != this.joystick.vX) &&
-          !this.isArm) {
+        if (
+          (dir != this.joystick.direction || vX != this.joystick.vX) &&
+          !this.isArm
+        ) {
           this.move(dir, vX, vY);
         }
       }, 500);
@@ -153,10 +155,23 @@ export class ControlComponent implements OnInit, OnDestroy {
     }
   }
 
+  async takePicture() {
+    try {
+      const res = await this.controlRobotService.takePicture({
+        camera: {
+          take_picture: true,
+          uploaded: false,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async activateArm() {
     try {
       const res = await this.controlRobotService.activateArm({
-        activatedArm: !this.activatedArm
+        activatedArm: !this.activatedArm,
       });
       this.activatedArm = !this.activatedArm;
     } catch (error) {
@@ -167,7 +182,7 @@ export class ControlComponent implements OnInit, OnDestroy {
   async changeMagnet() {
     try {
       const res = await this.controlRobotService.changeMagnet({
-        magnet: !this.isMagnet
+        magnet: !this.isMagnet,
       });
       this.isMagnet = !this.isMagnet;
     } catch (error) {
